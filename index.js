@@ -24,14 +24,15 @@ const guessTeamForPoint = ({ weights, point: {x, y} }) => {
 function train({ weights, point, actualTeam }) {
   const guessResult = guessTeamForPoint({ weights, point });
   const error = actualTeam - guessResult;
+  const learningRate = 0.3;
   return {
-    x: weights.x + point.x * error,
-    y: weights.y + point.y * error
+    x: weights.x + point.x * error * learningRate,
+    y: weights.y + point.y * error * learningRate
   };
 }
 
-const trainWeights = () => {
-  const randomPoints = generatePoints({ count: 1000 })
+const trainWeights = ({ count }) => {
+  const randomPoints = generatePoints({ count })
   const startingWeights = createRandomPoint({ Y_MAX: 1, X_MAX: 1, X_LOW: -1, Y_LOW: -1 });
   const trainedWeights = randomPoints.map( point => ({
     point,
@@ -45,8 +46,8 @@ const trainWeights = () => {
 }
 
 const test = () => {
-  const sampleSize = 200;
-  const trainedWeights = trainWeights();
+  const sampleSize = 10000;
+  const trainedWeights = trainWeights({ count: sampleSize });
   const randomPoints = generatePoints({ count: sampleSize });
 
   const results = randomPoints.map((point) => ({

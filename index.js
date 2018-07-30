@@ -1,3 +1,6 @@
+//TODO: Refactor
+//TODO: Push to github
+
 const Ramda = require('Ramda');
 
 const rand = ({ high, low }) => Math.random() * (high - low) + low;
@@ -21,7 +24,7 @@ const guessTeamForPoint = ({ weights, point: {x, y} }) => {
 
 
 
-function train({ weights, point, actualTeam }) {
+const train = ({ weights, point, actualTeam }) => {
   const guessResult = guessTeamForPoint({ weights, point });
   const error = actualTeam - guessResult;
   const learningRate = 0.3;
@@ -34,15 +37,14 @@ function train({ weights, point, actualTeam }) {
 const trainWeights = ({ count }) => {
   const randomPoints = generatePoints({ count })
   const startingWeights = createRandomPoint({ Y_MAX: 1, X_MAX: 1, X_LOW: -1, Y_LOW: -1 });
-  const trainedWeights = randomPoints.map( point => ({
+  return randomPoints.map( point => ({
     point,
     actualTeam: getTeamForPoint(point)
-  })).reduce((weights, { point, actualTeam }) => {
+  }))
+  .reduce((weights, { point, actualTeam }) => {
     const newWeights = train({ weights, point, actualTeam })
-    console.log(newWeights);
     return newWeights;
   }, startingWeights);
-  return trainedWeights;
 }
 
 const test = () => {
@@ -56,5 +58,6 @@ const test = () => {
   })).filter(({ actualTeam, guess}) => actualTeam === guess);
 
   console.log(`${results.length/sampleSize*100}%`);
-}
+};
+
 test();

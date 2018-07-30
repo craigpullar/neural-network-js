@@ -1,6 +1,3 @@
-//TODO: Refactor
-//TODO: Push to github
-
 const Ramda = require('Ramda');
 
 const rand = ({ high, low }) => Math.random() * (high - low) + low;
